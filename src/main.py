@@ -19,7 +19,7 @@ def normalizar_texto(texto):
     return texto_normalizado
 @app.get("/cantidad_filmaciones_mes/{mes}")
 def cantidad_filmaciones_mes(mes: int):
-    archivo_csv = '../data/movies_dataset/principal_movies.csv'
+    archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
     # Convertir la columna 'release_date' a datetime para facilitar la extracción del mes
@@ -36,7 +36,7 @@ def cantidad_filmaciones_mes(mes: int):
 
 @app.get("/cantidad_filmaciones_dia/{dia}")
 def cantidad_filmaciones_dia(dia: str):
-    archivo_csv = '../data/movies_dataset/principal_movies.csv'
+    archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
     # Convertir la columna 'release_date' a datetime para facilitar la extracción del día de la semana
@@ -63,7 +63,7 @@ def cantidad_filmaciones_dia(dia: str):
 
 @app.get("/score_titulo/{titulo_de_la_filmacion}")
 def score_titulo(titulo_de_la_filmacion: str):
-    archivo_csv = '../data/movies_dataset/principal_movies.csv'
+    archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
       #Normalizar texto
@@ -88,7 +88,7 @@ def score_titulo(titulo_de_la_filmacion: str):
 
 @app.get("/votos_titulo/{titulo_de_la_filmacion}")
 def votos_titulo(titulo_de_la_filmacion: str):
-    archivo_csv = '../data/movies_dataset/principal_movies.csv'
+    archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
     #Normalizar texto
@@ -118,7 +118,7 @@ def votos_titulo(titulo_de_la_filmacion: str):
 
 @app.get("/actor/{nombre_actor}")
 def get_actor(nombre_actor: str):
-    archivo_csv = '../data/credits/actor.csv'
+    archivo_csv = 'data/credits/actor.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
     #Normalizar texto de entrada
@@ -149,7 +149,7 @@ def get_actor(nombre_actor: str):
 
 @app.get("/director/{nombre_director}")
 def get_director(nombre_director: str):
-    archivo_csv = '../data/credits/director.csv'
+    archivo_csv = 'data/credits/director.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
     # Normalizar texto de entrada
