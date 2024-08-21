@@ -38,6 +38,8 @@ del modelo de recomendación que se desarrollará.
 - scikit-learn
 - Pandas
 - numpy
+- seaborn
+- matplotlib.pyplot
 
 **Pasos de instalación**
 1. Clonar el repositorio (https://github.com/YesikaMendez/ProyectoIndividual1)
