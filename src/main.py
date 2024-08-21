@@ -210,6 +210,9 @@ def get_director(nombre_director: str):
 
     return respuesta
 
+@app.get("/")
+def read_root():
+    return {"Hello": "Soy Henry"}
 
 @app.get("/recomendacion/{titulo_de_la_filmacion}")
 def get_recomendacion(titulo_de_la_filmacion: str):
