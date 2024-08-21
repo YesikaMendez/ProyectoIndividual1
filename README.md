@@ -22,7 +22,7 @@ Este proceso no solo mejora la calidad de los datos, sino que también increment
 del modelo de recomendación que se desarrollará.
 
 ## Tabla de contenido 
-1. [Introducción](#introducción)
+1. [Descripción del proyecto y objetivo](#introducción)
 2. [Instalación y Requisitos](#instalación-y-requisitos)
 3. [Metodología](#metodología)
 4. [Datos y Fuentes](#datos-y-fuentes)
@@ -38,7 +38,6 @@ del modelo de recomendación que se desarrollará.
 - scikit-learn
 - Pandas
 - numpy
-- seaborn
 - matplotlib.pyplot
 
 **Pasos de instalación**

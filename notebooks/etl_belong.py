@@ -2,7 +2,7 @@ import ast
 import pandas as pd
 from IPython.display import display
 
-# Lee el archivo CSV que está en el directorio 'data' dentro de tu proyecto
+# Lee el archivo CSV que está en el directorio 'data' dentro del proyecto
 archivo_csv = '../data/movies_dataset.csv'
 df = pd.read_csv(archivo_csv, low_memory=False)
 

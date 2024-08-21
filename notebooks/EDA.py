@@ -1,5 +1,4 @@
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Lee el archivo CSV que está en el directorio 'data' dentro de tu proyecto
@@ -9,11 +8,11 @@ df_movies = pd.read_csv(archivo_principal, low_memory=False)
 archivo_generos = '../data/movies_dataset/genres_movies.csv'
 df_genres = pd.read_csv(archivo_generos, low_memory=False)
 
-# Convertir las columnas 'id' y 'movie_id' al mismo tipo de dato
+# Convierte las columnas 'id' y 'movie_id' al mismo tipo de dato
 df_movies['id'] = df_movies['id'].astype(int)
 
 
-# Mostrar las primeras filas del dataset de películas
+# Muestra las primeras filas del dataset de películas
 print("Primeras filas del dataset de películas:")
 print(df_movies.head())
 
@@ -25,7 +24,7 @@ print(df_movies.info())
 print("\nResumen estadístico de las columnas numéricas del dataset de películas:")
 print(df_movies.describe())
 
-# Verificar valores nulos en el dataset de películas
+# Verifica valores nulos en el dataset de películas
 print("\nValores nulos en cada columna del dataset de películas:")
 print(df_movies.isnull().sum())
 
@@ -37,7 +36,7 @@ df_movies['runtime'] = df_movies['runtime'].fillna(df_movies['runtime'].median()
 df_movies['status'] = df_movies['status'].fillna(df_movies['status'].mode()[0])
 df_movies['tagline'] = df_movies['tagline'].fillna('Sin Tagline')
 
-# Reemplazar valores 0 en 'budget' y 'revenue' con NaN para tratamiento posterior
+# Reemplaza valores 0 en 'budget' y 'revenue' con NaN para tratamiento posterior
 df_movies['budget'] = df_movies['budget'].replace(0, pd.NA)
 df_movies['revenue'] = df_movies['revenue'].replace(0, pd.NA)
 
@@ -56,14 +55,14 @@ plt.xlabel('Vote Average')
 plt.ylabel('Frecuencia')
 plt.grid(True)
 
-# Guardar el gráfico como un archivo PNG
+# Guarda el gráfico como un archivo PNG
 plt.savefig('histograma_vote_average.png')
 plt.close()
 
-# Contar la cantidad de películas por cada género
+# Cuenta la cantidad de películas por cada género
 genre_counts = df_genres['name'].value_counts().head(10)
 
-# Crear el histograma
+# Crea el histograma
 plt.figure(figsize=(12, 8))
 genre_counts.plot(kind='bar', edgecolor='k', alpha=0.7)
 plt.title('Cantidad de Películas por Género')
@@ -72,6 +71,6 @@ plt.ylabel('Cantidad de Películas')
 plt.xticks(rotation=45)
 plt.grid(True)
 
-# Guardar el gráfico como un archivo PNG
+# Guarda el gráfico como un archivo PNG
 plt.savefig('histograma_genres.png')
 plt.close()

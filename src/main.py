@@ -1,10 +1,10 @@
-import ast
 import numpy as np
 import unicodedata
 from fastapi import FastAPI, HTTPException
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Diccionario dias de la semana en español para el endpoints cantidad_filmaciones_dia
 dias_semana = {
     'Monday': 'Lunes',
     'Tuesday': 'martes',
@@ -23,28 +23,28 @@ def normalizar_texto(texto):
     return texto_normalizado
 
 
-# load data genres
+# se carga data genres
 df_genres = pd.read_csv('data/movies_dataset/genres_movies.csv', names=['id', 'name', 'movie_id', 'vote_average'])
 
-# Convert movie_id to int
+# Convertir movie_id a entero
 df_genres['movie_id'] = pd.to_numeric(df_genres['movie_id'], errors='coerce').fillna(0).astype(int)
 
-# Group the genres by movie_id and create a list of genres for each movie
+# Agrupar los géneros por movie_id y crear una lista de géneros para cada película
 grouped = df_genres.groupby('movie_id')['name'].apply(list).reset_index()
 
-# Create a DataFrame movie genres group
+# Crear un grupo de géneros de películas DataFrame
 movies_df_genres = pd.DataFrame(grouped)
 
-# Unique genres
+# Géneros únicos
 unique_genres = list(set(genre for genres in movies_df_genres['name'] for genre in genres))
 
 
-# Function to convert genres to vectors
+# Función para convertir géneros a vectores
 def genres_to_vector(genres):
     return np.array([1 if genre in genres else 0 for genre in unique_genres])
 
 
-# Convert all movie genres to vectors and add to DataFrame
+# Convierte todos los géneros de películas en vectores y agrégalos a DataFrame
 movies_df_genres['vector'] = movies_df_genres['name'].apply(genres_to_vector)
 
 
@@ -53,13 +53,13 @@ def cantidad_filmaciones_mes(mes: int):
     archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
-    # Convertir la columna 'release_date' a datetime para facilitar la extracción del mes
+    # Convierte la columna 'release_date' a datetime para facilitar la extracción del mes
     df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce')
 
-    # Filtrar las filmaciones por el mes
+    # Filtra las filmaciones por el mes
     filmaciones_mes = df[df['release_date'].dt.month == mes]
 
-    # Contar la cantidad de filmaciones
+    # Cuenta la cantidad de filmaciones
     cantidad = filmaciones_mes.shape[0]
 
     return {"mes": mes, "cantidad_filmaciones": cantidad}
@@ -70,23 +70,23 @@ def cantidad_filmaciones_dia(dia: str):
     archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
-    # Convertir la columna 'release_date' a datetime para facilitar la extracción del día de la semana
+    # Convierte la columna 'release_date' a datetime para facilitar la extracción del día de la semana
     df['release_date'] = pd.to_datetime(df['release_date'], errors='coerce')
 
-    # Extraer el día de la semana en inglés
+    # Extrae el día de la semana en inglés
     df['dia_semana'] = df['release_date'].dt.day_name()
 
-    # Convertir el día de la semana a español y normalizar
+    # Convierte el día de la semana a español y normalizar
     df['dia_semana_es'] = df['dia_semana'].map(dias_semana)
     df['dia_semana_es_normalizado'] = df['dia_semana_es'].apply(normalizar_texto)
 
-    # Normalizar la entrada del usuario
+    # Normaliza la entrada del usuario
     dia_normalizado = normalizar_texto(dia)
 
-    # Filtrar las filmaciones por el día en español normalizado
+    # Filtra las filmaciones por el día en español normalizado
     filmaciones_dia = df[df['dia_semana_es_normalizado'] == dia_normalizado]
 
-    # Contar la cantidad de filmaciones en ese día
+    # Cuenta la cantidad de filmaciones en ese día
     cantidad = filmaciones_dia.shape[0]
 
     return {"dia": dia, "cantidad_filmaciones": cantidad}
@@ -97,19 +97,19 @@ def score_titulo(titulo_de_la_filmacion: str):
     archivo_csv = 'data/movies_dataset/principal_movies.csv'
     df = pd.read_csv(archivo_csv, low_memory=False)
 
-    #Normalizar texto
+    #Normaliza texto
     df['original_title_normalizado'] = df['original_title'].apply(normalizar_texto)
 
-    #Normalizar texto de entrada
+    #Normaliza texto de entrada
     titulo_de_la_filmacion_normalizado = normalizar_texto(titulo_de_la_filmacion)
 
-    # Filtrar el DataFrame por el título
+    # Filtra el DataFrame por el título
     df_filtrado = df[df['original_title'].str.contains(titulo_de_la_filmacion_normalizado, case=False, na=False)]
 
     if df_filtrado.empty:
         raise HTTPException(status_code=404, detail="Filmación no encontrada")
 
-    # Obtener el título, año y score
+    # Obtiene el título, año y score
     titulo = df_filtrado.iloc[0]['original_title']
     year = int(df_filtrado.iloc[0]['release_year']) if pd.notna(df_filtrado.iloc[0]['release_year']) else None
     score = float(df_filtrado.iloc[0]['vote_average']) if pd.notna(df_filtrado.iloc[0]['vote_average']) else None
